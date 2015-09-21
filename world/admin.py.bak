@@ -1,0 +1,72 @@
+from django.contrib.gis import admin
+from models import Address, Item
+from django.core.mail import mail_admins
+from django.contrib.gis.geos import fromstr
+from django import forms
+import urllib2
+import json
+import urllib
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger("helphelp")
+
+GMAPS_URL = "https://maps.googleapis.com/maps/api/geocode/json?"
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = '__all__'
+
+    def clean(self):
+        street = self.cleaned_data.get("street")
+        city = self.cleaned_data.get("city")
+
+        address = urllib.urlencode({"address":"%s %s" %
+            (city.encode("utf-8"), street.encode("utf-8"))})
+        url = GMAPS_URL + address
+
+        try:
+            res = urllib2.urlopen(url).read()
+            res = json.loads(res)["results"]
+
+            if not res:
+                raise forms.ValidationError("Incorrect address. Make sure address is correct and try again.")
+
+            lat = res[0]["geometry"]["location"]["lat"]
+            lon = res[0]["geometry"]["location"]["lng"]
+        
+            self.lat = lat
+            self.lon = lon
+        except forms.ValidationError as e:
+            raise e
+        
+        except Exception as e:
+            logger.error("Geocode error for address %s : %s" % (address, str(e)))
+            raise forms.ValidationError("Cannot geocode address. Try again.")
+
+        return self.cleaned_data
+
+class AddressAdmin(admin.OSMGeoAdmin):
+    form = AddressForm
+    list_display = ("name", )
+    fields = ("name", "city", "street", "zipcode",
+        "phone", "person", "hours", "website", "items")
+    filter_horizontal = ('items',)
+
+    def get_queryset(self, request):
+        qs = super(AddressAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(author=request.user)
+
+    def save_model(self, request, obj, form, change):
+        obj.author = request.user
+        obj.location = fromstr("POINT(%s %s)" % (form.lon, form.lat))
+        obj.save()
+
+        msg = "%s https://helphelp2.com/admin/world/address/%s/" % (obj.name, obj.id)
+        mail_admins(subject="Helphelp2: new address", message=msg)
+
+admin.site.register(Address, AddressAdmin)
+admin.site.register(Item)
