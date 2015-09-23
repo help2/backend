@@ -12,7 +12,7 @@
 ### Python dependencies
 * `pip install django`
 * `pip install django-simple-history`
-* `pip install django-registration`
+* `pip install django-registration-redux`
 * `pip install psycopg2`
 
 ### Local config
