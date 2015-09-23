@@ -14,6 +14,7 @@
 * `pip install django-simple-history`
 * `pip install django-registration-redux`
 * `pip install psycopg2`
+* `pip install bootstrap-admin`
 
 ### Local config
 Add a `heart/settings_local.py` file containing something like:
