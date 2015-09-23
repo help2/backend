@@ -25,11 +25,11 @@ TEMPLATE_DIRS = (
 #SECRET_KEY = 'moved to settings_local.py'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = [".stipakov.fi", "helphelp2.com", "helphelp2.de", "helphelp2.eu", "www.helphelp2.com"]
+ALLOWED_HOSTS = [".stipakov.fi", "helphelp2.com", "helphelp2.de", "helphelp2.eu", "www.helphelp2.com", "localhost"]
 
 
 # Application definition
@@ -44,7 +44,8 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'world',
     'registration',
-    'simple_history'
+    'simple_history',
+    'django_extensions'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -136,7 +137,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/var/log/django.log',
+            'filename': 'django.log',
             'formatter': "verbose"
         },
     },
