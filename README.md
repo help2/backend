@@ -48,15 +48,8 @@ DEBUG = True
 * `python manage.py migrate auth`
 * `python manage.py migrate`
 
-### Start Server
-* `python manage.py runserver`
-
 ### Setup first User
-* Go to [localhost:8000/account/register](http://localhost:8000/account/register/) to create a new user
-* Run `python manage.py shell` to get into the python shell and run the following commands in there
-  * `from django.contrib.auth.models import User`
-  * `me = User.objects.get(pk=1)`
-  * `me.is_active = True`
-  * `me.is_staff = True`
-  * `me.is_superuser = True`
-  * `me.save()`
+Run `python manage.py createsuperuser` and follow the instructions
+
+### Start Server
+`python manage.py runserver`
