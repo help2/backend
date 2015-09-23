@@ -38,6 +38,8 @@ ALLOWED_HOSTS = ["localhost"]
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 DEBUG = True
+
+# you might overwrite the path of the log file here to avoid permission issues
 ```
 
 ### Create Database
