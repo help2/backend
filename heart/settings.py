@@ -25,11 +25,11 @@ TEMPLATE_DIRS = (
 #SECRET_KEY = 'moved to settings_local.py'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = [".stipakov.fi", "helphelp2.com", "helphelp2.de", "helphelp2.eu", "www.helphelp2.com"]
+ALLOWED_HOSTS = [".stipakov.fi", "helphelp2.com", "helphelp2.de", "helphelp2.eu", "www.helphelp2.com", "localhost"]
 
 
 # Application definition
@@ -45,7 +45,8 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'world',
     'registration',
-    'simple_history'
+    'simple_history',
+    'django_extensions'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -165,7 +166,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/var/log/django.log',
+            'filename': 'django.log',
             'formatter': "verbose"
         },
     },
@@ -182,3 +183,30 @@ try:
     from settings_local import *
 except ImportError:
     pass
+
+from django.conf import global_settings
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # insert your TEMPLATE_DIRS here
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
+            ]
+        },
+    },
+]
+
+BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
