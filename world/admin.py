@@ -56,7 +56,6 @@ class AddressAdmin(geoadmin.OSMGeoAdmin, shadmin.SimpleHistoryAdmin):
     list_display = ("name", )
     fields = ("name", "city", "street", "zipcode",
         "phone", "person", "hours", "website", "need_helpers", "validity", "items")
-    filter_horizontal = ('items',)
 
     def get_queryset(self, request):
         qs = super(AddressAdmin, self).get_queryset(request)

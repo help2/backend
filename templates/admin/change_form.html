@@ -1,0 +1,17 @@
+{% extends "../../bootstrap_admin/templates/admin/change_form.html" %}
+
+{% block js %}
+  {{ block.super }}
+  <script>
+    jQuery = django.jQuery;
+    jQuery(document).ready(function() {
+      jQuery('#id_items').select2().hide();
+    });
+  </script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
