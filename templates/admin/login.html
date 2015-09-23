@@ -1,60 +1,16 @@
-{% extends "admin/base_site.html" %}
-{% load i18n admin_static %}
+{% extends "../../bootstrap_admin/templates/admin/login.html" %}
+{% load i18n admin_static bootstrap_admin_template_tags %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />{% endblock %}
+{% block content_container %}
+  {{ block.super }}
 
-{% block bodyclass %}{{ block.super }} login{% endblock %}
-
-{% block usertools %}{% endblock %}
-
-{% block nav-global %}{% endblock %}
-
-{% block content_title %}{% endblock %}
-
-{% block breadcrumbs %}{% endblock %}
-
-{% block content %}
-{% if form.errors and not form.non_field_errors %}
-<p class="errornote">
-{% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
-</p>
-{% endif %}
-
-{% if form.non_field_errors %}
-{% for error in form.non_field_errors %}
-<p class="errornote">
-    {{ error }}
-</p>
-{% endfor %}
-{% endif %}
-
-<div id="content-main">
-<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-  <div class="form-row">
-    {{ form.username.errors }}
-    {{ form.username.label_tag }} {{ form.username }}
+  <div id="register_form" style="background: #272727; border-bottom: 2px solid #444; border-top: 2px solid #444; padding: 20px 0;">
+    <span class="input-group-btn">
+      <center>
+        <button class="btn" onclick="location.href='/account/register'">
+          {% trans 'Register' %}
+        </button>
+      </center>
+    </span>
   </div>
-  <div class="form-row">
-    {{ form.password.errors }}
-    {{ form.password.label_tag }} {{ form.password }}
-    <input type="hidden" name="next" value="{{ next }}" />
-  </div>
-  {% url 'admin_password_reset' as password_reset_url %}
-  {% if password_reset_url %}
-  <div class="password-reset-link">
-    <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
-  </div>
-  {% endif %}
-    <div class="submit-row" style="width: 100%; text-align: center;padding-left: 0;">
-      <div style="display: inline-block">
-      <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
-      <label>&nbsp;</label><input type="button" onclick="location.href='/account/register'"  value="{% trans 'Register' %}" />
-  </div>
-      </div>
-</form>
-
-<script type="text/javascript">
-document.getElementById('id_username').focus()
-</script>
-</div>
 {% endblock %}
