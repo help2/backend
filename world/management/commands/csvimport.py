@@ -3,6 +3,9 @@ from world.models import Address, Item
 from world import admin 
 from django.contrib.gis.geos import fromstr
 import codecs
+import logging
+
+logger = logging.getLogger("helphelp")
 
 class Command(BaseCommand):
     args = "Arguments is not needed"
@@ -10,13 +13,8 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("csv_file", nargs='+', type=str)
- 
-    def handle(self, *args, **options):
-        # read data from CSV
-        lines = []
-        with codecs.open(options["csv_file"][0], 'r', encoding='utf8') as f:
-            lines = f.readlines()
-        
+
+    def process_lines(self, lines):
         # read addresses from DB
         existing_addrs = dict()
         for addr in Address.objects.all():
@@ -39,11 +37,11 @@ class Command(BaseCommand):
 
                 addr = existing_addrs.get(name.lower(), None)
                 if not addr:
-                    self.stdout.write("Creating address %s" % name)
+                    logger.info("Creating address %s" % name)
                     addr = Address()
                     existing_addrs[name.lower()] = addr
                 else:
-                    self.stdout.write("Using existing address %s" % name)
+                    logger.info("Using existing address %s" % name)
                 
                 addr.name = name.strip()
                 addr.city = city.strip()
@@ -68,9 +66,12 @@ class Command(BaseCommand):
                 items = items.split("|")
                 for item_name in items:
                     item_name = item_name.strip()
+                    if not item_name:
+                        continue
+
                     item = existing_items.get(item_name.lower(), None)
                     if not item:
-                        self.stdout.write("Creating item %s" % item_name)
+                        logger.info("Creating item %s" % item_name)
                         item = Item(name=item_name)
                         item.save()
                         existing_items[item_name.lower()] = item
@@ -80,5 +81,16 @@ class Command(BaseCommand):
                 addr.save()
 
             except Exception as e:
-                self.stderr.write("Error processing %s... : %s" % (l[:20], e))
+                logger.error("Error processing %s... : %s" % (l[:20], e))
                 continue
+
+
+ 
+    def handle(self, *args, **options):
+        # read data from CSV
+        lines = []
+        with codecs.open(options["csv_file"][0], 'r', encoding='utf8') as f:
+            lines = f.readlines()
+        
+        self.process_lines(lines)
+        
