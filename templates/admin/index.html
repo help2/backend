@@ -12,13 +12,9 @@
 {% block content %}
 
 <style>
-  .address-buttons {
-    margin: 0 auto;
+  .extra-padding {
     margin-top: 1em;
     margin-bottom: 1em;
-  }
-  .address-buttons.panel {
-    max-width: 30em;
   }
   .address-buttons .panel-heading {
     font-size: 1.5em;
@@ -34,92 +30,103 @@
   }
 </style>
 
-<div id="content-main" class="admin-landing-page">
-  <div class="panel panel-default address-buttons">
-    <div class="panel-heading">
-      My Addresses
-    </div>
-    <div class="list-group">
-      {% for address in request.user.address_set.all %}
-        <a href="/admin/world/address/{{ address.id }}/" class="list-group-item">
-          <span class="badge">
-            <span class="glyphicon glyphicon-pencil"></span>
-            Edit
-          </span>
-          {{ address.name }}
-        </a> 
-      {% endfor %}
-    </div>
-    <div class="add-address-button">
-      <a href="/admin/world/address/add/" class="btn btn-md btn-default" aria-label="..">
-        <span class="glyphicon glyphicon-plus"></span>
-        Add Address
-      </a>
-    </div>
-  </div>
-
-  <center>
-    <iframe width="504" height="264" src="https://www.youtube.com/embed/CwHzGqliAzk" frameborder="0" allowfullscreen></iframe>
-  </center>
-  
-  {% if app_list %}
-    <div class="panel panel-default" id="apps">
-      <div class="panel-heading">
-        <div class="btn-group apps-recent-actions">
-          <button class="btn btn-default" title="{% trans "Apps" %}">
-            <span class="glyphicon glyphicon-star-empty"></span>
-          </button>
+<div id="content-main">
+  <div class="row">
+    <div class="col-sm-12 col-md-6">
+      <div class="panel panel-default address-buttons extra-padding">
+        <div class="panel-heading">
+          My Addresses
+        </div>
+        <div class="list-group">
+          {% for address in request.user.address_set.all %}
+            <a href="/admin/world/address/{{ address.id }}/" class="list-group-item">
+              <span class="badge">
+                <span class="glyphicon glyphicon-pencil"></span>
+                Edit
+              </span>
+              {{ address.name }}
+            </a> 
+          {% endfor %}
+        </div>
+        <div class="add-address-button">
+          <a href="/admin/world/address/add/" class="btn btn-md btn-default" aria-label="..">
+            <span class="glyphicon glyphicon-plus"></span>
+            Add Address
+          </a>
         </div>
       </div>
-      <div class="table-responsive table-apps">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th class="title-head-apps">
-                {% trans "Apps" %}
-              </th>
-              <th class="search-apps-models">
-                <form action="" method="get">
-                  <div class="wrapper">
-                    <span class="glyphicon glyphicon-search"></span>
-                    <input placeholder="{% trans "Search" %}" class="search form-control input-sm" type="input" name="q">
-                    <span class="remove-this label label-info"><span class="glyphicon glyphicon-remove"></span> <span class="text"></span></span>
-                  </div>
-                </form>
-              </th>
-              <th class="title-head-actions">{% trans "Action" %}</th>
-            </tr>
-          </thead>
-          <tbody class="list">
-            {% for app in app_list %}
-              {% cycle ' bg-colored' '' as rowcolors silent %}
-              {% for model in app.models %}
-                    <tr class="app-{{ app.app_label }}{{ rowcolors }}">
-                    {% if forloop.first %}
-                      <td rowspan="{{ app.models|length }}" class="app-name {% if forloop.parentloop.last %}last-app{% endif %}">
-                        <a href="{{ app.app_url }}" class="section" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
-                      </td>
-                    {% endif %}
+    </div>
 
-                    <td class="model-name model-{{ model.object_name|lower }}">
-                      {% if forloop.first %}
-                        <a href="{{ app.app_url }}" class="extra-app-name" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
-                      {% endif %}
-                      <a href="{% if model.admin_url %}{{ model.admin_url }}{% else %}#{% endif %}" title="{{ app.name }} &raquo; {{ model.name }}" {% if not model.admin_url %}class="disabled"{% endif %}>{{ model.name }}</a>
-                    </td>
+    <div class="col-sm-12 col-md-6">
+      <div class="embed-responsive embed-responsive-16by9 extra-padding">
+        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/CwHzGqliAzk" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
 
-                    <td class="model-{{ model.object_name|lower }} actions">
-                      <div class="btn-group btn-group-justified btn-group-actions">
-                        <a href="{% if model.add_url %}{{ model.add_url }}{% endif %}" role="button" class="addlink btn {% if not model.add_url %}disabled{% endif %}" data-toggle="tooltip" data-placement="left" title="{% trans 'Add' %}"><span class="glyphicon glyphicon-plus"></span></a>
-                        <a href="{% if model.admin_url %}{{ model.admin_url }}{% endif %}" role="button" class="changelink btn {% if not model.admin_url %}disabled{% endif %}" title="{% trans 'Change' %}" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-pencil"></span></a>
-                        <a href="#" class="btn search-in-model" data-toggle="tooltip" data-placement="left" title="{% trans 'Search' %}" data-model-name="{{ model.name }}" data-url-model-name="{{ model.admin_url }}"><span class="glyphicon glyphicon-search"></span></a>
+  </div>
+  
+  {% if app_list %}
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="panel panel-default" id="apps">
+          <div class="panel-heading">
+            <div class="btn-group apps-recent-actions">
+              <button class="btn btn-default" title="{% trans "Apps" %}">
+                <span class="glyphicon glyphicon-star-empty"></span>
+              </button>
+            </div>
+          </div>
+          <div class="table-responsive table-apps">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="title-head-apps">
+                    {% trans "Apps" %}
+                  </th>
+                  <th class="search-apps-models">
+                    <form action="" method="get">
+                      <div class="wrapper">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <input placeholder="{% trans "Search" %}" class="search form-control input-sm" type="input" name="q">
+                        <span class="remove-this label label-info"><span class="glyphicon glyphicon-remove"></span> <span class="text"></span></span>
                       </div>
-                    </td>
-                  </tr>
-              {% endfor %}
-            {% endfor %}
-          </tbody>
-        </table>
+                    </form>
+                  </th>
+                  <th class="title-head-actions">{% trans "Action" %}</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+                {% for app in app_list %}
+                  {% cycle ' bg-colored' '' as rowcolors silent %}
+                  {% for model in app.models %}
+                        <tr class="app-{{ app.app_label }}{{ rowcolors }}">
+                        {% if forloop.first %}
+                          <td rowspan="{{ app.models|length }}" class="app-name {% if forloop.parentloop.last %}last-app{% endif %}">
+                            <a href="{{ app.app_url }}" class="section" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
+                          </td>
+                        {% endif %}
+
+                        <td class="model-name model-{{ model.object_name|lower }}">
+                          {% if forloop.first %}
+                            <a href="{{ app.app_url }}" class="extra-app-name" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
+                          {% endif %}
+                          <a href="{% if model.admin_url %}{{ model.admin_url }}{% else %}#{% endif %}" title="{{ app.name }} &raquo; {{ model.name }}" {% if not model.admin_url %}class="disabled"{% endif %}>{{ model.name }}</a>
+                        </td>
+
+                        <td class="model-{{ model.object_name|lower }} actions">
+                          <div class="btn-group btn-group-justified btn-group-actions">
+                            <a href="{% if model.add_url %}{{ model.add_url }}{% endif %}" role="button" class="addlink btn {% if not model.add_url %}disabled{% endif %}" data-toggle="tooltip" data-placement="left" title="{% trans 'Add' %}"><span class="glyphicon glyphicon-plus"></span></a>
+                            <a href="{% if model.admin_url %}{{ model.admin_url }}{% endif %}" role="button" class="changelink btn {% if not model.admin_url %}disabled{% endif %}" title="{% trans 'Change' %}" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="#" class="btn search-in-model" data-toggle="tooltip" data-placement="left" title="{% trans 'Search' %}" data-model-name="{{ model.name }}" data-url-model-name="{{ model.admin_url }}"><span class="glyphicon glyphicon-search"></span></a>
+                          </div>
+                        </td>
+                      </tr>
+                  {% endfor %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   {% else %}
