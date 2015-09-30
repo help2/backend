@@ -34,7 +34,18 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
         fields = '__all__'
-
+        labels ={
+		'name' : ('Standortname'),
+		'city' : ('Stadt'),
+		'street' : ('Strasse'),
+		'zipcode' : ('Postleitzahl'),
+		'phone' : ('Telefon'),
+		'person' : ('Kontaktperson'),
+		'hours' : ('Zeiten'),
+		'website' : ('Webseite'),
+		'validity' : ('Ablaufzeit in Stunden'),
+		'items' : ('Gegenstaende'),
+		}
     def clean(self):
         street = self.cleaned_data.get("street")
         city = self.cleaned_data.get("city")
