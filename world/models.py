@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from simple_history.models import HistoricalRecords
 
 class Item(models.Model):
-    name = models.CharField(max_length=64)
-    comment = models.CharField(max_length=256, blank=True)
+    name = models.CharField('Gegenstand',max_length=64)
+    comment = models.CharField('Beschreibung',max_length=256, blank=True)
 
     class Meta:
         ordering = ["name"]
