@@ -52,43 +52,68 @@
 			  <a href="/admin/world/address/add/" class="btn btn-md btn-default" aria-label="..">
 				<span class="glyphicon glyphicon-plus"></span>
 				{% trans "Add" %}
-			  </a>		  
-			</div>	
-		</div>
-	  
-	    <div class="panel panel-default address-buttons extra-padding">
-			<div class="panel-heading">
-			  {% trans 'Meine Gegenstaende' %} 
-			</div>
-			<div class="list-group">
-			  {% for address in request.user.item_set.all %}
-				<a href="/admin/world/adress/{{ item.id }}/" class="list-group-item">
-				  <span class="badge">
-					<span class="glyphicon glyphicon-pencil"></span>
-					{% trans 'Edit' %}
-				  </span>
-				  {{ item.name }}
-				</a> 
-			  {% endfor %}
-			</div>
-			<div class="add-address-button">
-			  <a href="/admin/world/item/add/" class="btn btn-md btn-default" aria-label="..">
-				<span class="glyphicon glyphicon-plus"></span>
-				{% trans 'Add' %}
-			  </a>
-					  
-			</div>	
-		</div>
-		
-		<a href="https://www.youtube.com/embed/CwHzGqliAzk" class="btn btn-md btn-default" aria-label="..">
+			  </a>		
+			  <a href="https://www.youtube.com/embed/CwHzGqliAzk" class="btn btn-md btn-default" aria-label="..">
 				<span class="glyphicon glyphicon-info-sign"></span>
 				{% trans 'Videoanleitung' %} 
-			  </a>
-		
+			  </a>			  
+			</div>	
+		</div>
+	  			
     </div>
 	
   </div>
-  
+
+  {% if app_list %}
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <div class="panel panel-default" id="apps">
+          <div class="panel-heading">
+            <div class="btn-group apps-recent-actions">
+              <button class="btn btn-default" title="{% trans "Apps" %}">
+                <span class="glyphicon glyphicon-star-empty"></span>
+              </button>
+            </div>
+          </div>
+          <div class="table-responsive table-apps">
+            <table class="table table-bordered">
+         
+              <tbody class="list">
+                {% for app in app_list %}
+                  {% cycle ' bg-colored' '' as rowcolors silent %}
+                  {% for model in app.models %}
+                        <tr class="app-{{ app.app_label }}{{ rowcolors }}">
+                        {% if forloop.first %}
+                          
+                        {% endif %}
+
+                        <td class="model-name model-{{ model.object_name|lower }}">
+                          {% if forloop.first %}
+                            <a href="{{ app.app_url }}" class="extra-app-name" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
+                          {% endif %}
+                          <a href="{% if model.admin_url %}{{ model.admin_url }}{% else %}#{% endif %}" title="{{ app.name }} &raquo; {{ model.name }}" {% if not model.admin_url %}class="disabled"{% endif %}>{{ model.name }}</a>
+                        </td>
+
+                        <td class="model-{{ model.object_name|lower }} actions">
+                          <div class="btn-group btn-group-justified btn-group-actions">
+                            <a href="{% if model.add_url %}{{ model.add_url }}{% endif %}" role="button" class="addlink btn {% if not model.add_url %}disabled{% endif %}" data-toggle="tooltip" data-placement="left" title="{% trans 'Add' %}"><span class="glyphicon glyphicon-plus"></span></a>
+                            <a href="{% if model.admin_url %}{{ model.admin_url }}{% endif %}" role="button" class="changelink btn {% if not model.admin_url %}disabled{% endif %}" title="{% trans 'Change' %}" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="#" class="btn search-in-model" data-toggle="tooltip" data-placement="left" title="{% trans 'Search' %}" data-model-name="{{ model.name }}" data-url-model-name="{{ model.admin_url }}"><span class="glyphicon glyphicon-search"></span></a>
+                          </div>
+                        </td>
+                      </tr>
+                  {% endfor %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <p>{% trans "You don't have permission to edit anything." %}</p>
+  {% endif %}
+</div>  
   
 </div>
 {% endblock %}
