@@ -9,7 +9,7 @@ from csvimport import Command as CsvImporter
 
 logger = logging.getLogger("helphelp")
 
-CSV_LINKS = ["marzahn.schnell-helfen.de/index.php?id=1655","lichtenberg.schnell-helfen.de/index.php?id=1655","xhain.schnell-helfen.de/index.php?id=1655","hma103.schnell-helfen.de/index.php?id=1655"]
+CSV_LINKS = ["http://marzahn.schnell-helfen.de/index.php?id=1655","http://lichtenberg.schnell-helfen.de/index.php?id=1655","http://xhain.schnell-helfen.de/index.php?id=1655","http://hma103.schnell-helfen.de/index.php?id=1655"]
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
