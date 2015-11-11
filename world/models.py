@@ -3,6 +3,7 @@
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 from simple_history.models import HistoricalRecords
+from urlparse import urlparse
 
 class Item(models.Model):
     name = models.CharField('Gegenstand',max_length=64)
@@ -37,3 +38,12 @@ class Address(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        # add missing http:// prefix to make link open correctly in browser
+        if self.website:
+            p = urlparse(self.website)
+            if not p.scheme:
+                self.website = "http://%s" % self.website
+
+        super(Address, self).save(*args, **kwargs)
