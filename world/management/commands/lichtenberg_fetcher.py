@@ -32,4 +32,7 @@ class Command(BaseCommand):
             except (urllib2.URLError, urllib2.HTTPError) as e:
                 logger.error("Cannot fetch %s: %s" % (l, e.reason))
 
+            except (Exception, e):
+                logger.error("Error parsing %s: %s" % (l, e.reason))
+
         csv_importer.process_lines(lines)
