@@ -14,9 +14,9 @@ logger = logging.getLogger("helphelp")
 
 GMAPS_URL = "https://maps.googleapis.com/maps/api/geocode/json?"
 
-def geocode(city, street):
-    address = urllib.urlencode({"address":"%s %s" %
-            (city.encode("utf-8"), street.encode("utf-8"))})
+def geocode(zipcode, city, street):
+    address = urllib.urlencode({"address": "%s %s %s" %
+            (zipcode.encode("utf-8"), city.encode("utf-8"), street.encode("utf-8"))})
     url = GMAPS_URL + address
 
     res = urllib2.urlopen(url).read()
@@ -49,9 +49,10 @@ class AddressForm(forms.ModelForm):
     def clean(self):
         street = self.cleaned_data.get("street")
         city = self.cleaned_data.get("city")
+        zipcode = self.cleaned_data.get("zipcode")
 
         try:
-            self.lat, self.lon = geocode(city, street)
+            self.lat, self.lon = geocode(zipcode, city, street)
 
         except forms.ValidationError as e:
             raise e

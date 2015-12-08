@@ -55,7 +55,7 @@ class Command(BaseCommand):
                 if validity:
                     addr.validity = int(validity.strip())
 
-                lat, lon = admin.geocode(city.strip(), street.strip())
+                lat, lon = admin.geocode(zipcode.strip(), city.strip(), street.strip())
                 addr.location = fromstr("POINT(%s %s)" % (lon, lat))
 
                 # have to save to add m2m below
