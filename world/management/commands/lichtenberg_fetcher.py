@@ -9,7 +9,7 @@ from csvimport import Command as CsvImporter
 
 logger = logging.getLogger("helphelp")
 
-CSV_LINKS = ["http://marzahn.schnell-helfen.de/index.php?id=1655","http://lichtenberg.schnell-helfen.de/index.php?id=1655","http://xhain.schnell-helfen.de/index.php?id=1655","http://hma103.schnell-helfen.de/index.php?id=1655","http://gruenheide.schnell-helfen.de/index.php?id=1655","http://bernau.schnell-helfen.de/index.php?id=1655","http://unterfoehring.schnell-helfen.de/index.php?id=1655", "http://wrangelkiez.schnell-helfen.de/index.php?id=1655","http://treptow-koepenick.schnell-helfen.de/index.php?id=1655","http://steglitz-zehlendorf.schnell-helfen.de/index.php?id=1655","http://donutplanet.de:1337/csv"]
+CSV_LINKS = ["http://marzahn.schnell-helfen.de/index.php?id=1655","http://lichtenberg.schnell-helfen.de/index.php?id=1655","http://xhain.schnell-helfen.de/index.php?id=1655","http://hma103.schnell-helfen.de/index.php?id=1655","http://gruenheide.schnell-helfen.de/index.php?id=1655","http://bernau.schnell-helfen.de/index.php?id=1655","http://unterfoehring.schnell-helfen.de/index.php?id=1655", "http://wrangelkiez.schnell-helfen.de/index.php?id=1655","http://treptow-koepenick.schnell-helfen.de/index.php?id=1655","http://steglitz-zehlendorf.schnell-helfen.de/index.php?id=1655","http://donutplanet.de:1337/csv","https://stezeh-ha.schnell-helfen.de/index.php?id=1655","http://reinickendorf.schnell-helfen.de/index.php?id=1655"]
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
